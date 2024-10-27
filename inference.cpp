@@ -6,9 +6,7 @@
 using namespace cv;
 using namespace std;
 
-argparse::ArgumentParser getInput(int argc, const char* argv[]){
-
-    argparse::ArgumentParser program("libtorch_inference");
+void getInput(argparse::ArgumentParser &program, int argc, const char* argv[]) {
     program.add_argument("--model_path")
         .required()
         .help("specify script model path");
@@ -24,7 +22,6 @@ argparse::ArgumentParser getInput(int argc, const char* argv[]){
         std::cerr << program;
         std::exit(1);
     }
-    return program;
 }
 
 torch::Tensor processImage(string image_path){
@@ -86,8 +83,9 @@ void getResult(torch::Tensor output, std::vector<std::string> labelList){
 int main(int argc, const char* argv[]) {
 
     // Argparser
-    argparse::ArgumentParser program = getInput(argc, argv);
-
+    argparse::ArgumentParser program("libtorch_inference");
+    getInput(program, argc, argv);
+    
     auto model_path = program.get<string>("--model_path");
     auto image_path = program.get<string>("--image_path");
 
